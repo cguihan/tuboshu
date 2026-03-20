@@ -9,19 +9,11 @@ import AutoLaunch from "./utility/autoLaunch.js"
 // app.disableHardwareAcceleration();
 //app.commandLine.appendSwitch('disable-gpu');
 
-//app.commandLine.appendSwitch('disable-webrtc');
-// 1. 设置多个信任源，中间用逗号隔开，不要有空格
-const insecureOrigins = [
-  'http://47.121.124.140',
-  'http://192.168.31.194'
-].join(',');
 
 // 2. 将此标志添加到 Chromium 命令行
 // 注意：必须在 app 准备就绪（ready）之前调用
-app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', insecureOrigins);
+app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://47.121.124.140:6806,http://192.168.31.194:6806');
 
-// 3. (可选但建议) 配合禁用某些安全警告，以便更好地在不安全源上运行
- app.commandLine.appendSwitch('allow-insecure-localhost'); 
 
 
 app.commandLine.appendSwitch('disable-software-rasterizer');
