@@ -9,6 +9,8 @@ import AutoLaunch from "./utility/autoLaunch.js"
 // app.disableHardwareAcceleration();
 //app.commandLine.appendSwitch('disable-gpu');
 //app.commandLine.appendSwitch('disable-webrtc');
+app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://47.121.124.140:6806');
+
 app.commandLine.appendSwitch('disable-software-rasterizer');
 app.commandLine.appendSwitch('ignore-certificate-errors');
 
