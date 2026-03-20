@@ -12,8 +12,8 @@ import AutoLaunch from "./utility/autoLaunch.js"
 //app.commandLine.appendSwitch('disable-webrtc');
 // 1. 设置多个信任源，中间用逗号隔开，不要有空格
 const insecureOrigins = [
-  'http://47.121.124.140:6806',
-  'http://87.11.124.145'
+  'http://47.121.124.140',
+  'http://192.168.31.194'
 ].join(',');
 
 // 2. 将此标志添加到 Chromium 命令行
