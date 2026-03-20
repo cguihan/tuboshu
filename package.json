@@ -1,6 +1,6 @@
 {
   "name": "tuboshu",
-  "version": "v2.1.0",
+  "version": "v2.1.2",
   "main": "out/main.js",
   "type": "module",
   "scripts": {
@@ -63,23 +63,16 @@
     "mac": {
       "category": "public.app-category.productivity",
       "target": "dmg",
+      "arch": ["arm64"],
       "icon": "resource/build/mac_icon.icns",
       "identity": null,
       "artifactName": "${productName}-Setup-${version}-mac-${arch}.${ext}"
     },
     "win": {
       "target": "nsis",
+      "arch": ["x64"],
       "icon": "resource/build/win_icon.ico",
       "artifactName": "${productName}-Setup-${version}-win-${arch}.${ext}"
-    },
-    "linux": {
-      "category": "utility",
-      "target": [
-        "AppImage",
-        "deb"
-      ],
-      "icon": "build/linux_icon.png",
-      "artifactName": "${productName}-Setup-${version}-linux-${arch}.${ext}"
     },
     "nsis": {
       "oneClick": false,
