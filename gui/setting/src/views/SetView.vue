@@ -18,6 +18,10 @@ const leftMenuPosition = ref('left')
 const howLinkOpenMethod = ref('tuboshu')
 const defaultWindowSize = ref({width: 1024, height: 800})
 
+// 地址管理相关
+const insecureOriginUrls = ref('')
+const newUrl = ref('')
+
 const version = ref({
   version: '加载中...',
   electron: '--',
@@ -61,6 +65,7 @@ onMounted(async () => {
   isAutoLaunch.value = getValue('isAutoLaunch', settings);
   defaultWindowSize.value = getValue('defaultWindowSize', settings);
   howLinkOpenMethod.value = getValue('howLinkOpenMethod', settings);
+  insecureOriginUrls.value = getValue('insecureOriginUrls', settings);
 })
 
 
@@ -166,6 +171,52 @@ const handleBtnClick = async ()=> {
     message.success(`Tuboshu缓存已清除`)
     }, 2e3);
 }
+
+const addUrl = () => {
+  const url = newUrl.value.trim();
+  if (!url) {
+    message.error('请输入有效的地址');
+    return;
+  }
+  
+  // 验证URL格式
+  if (!url.match(/^https?:\/\/.+/)) {
+    message.error('请输入以 http:// 或 https:// 开头的地址');
+    return;
+  }
+  
+  const urls = insecureOriginUrls.value ? insecureOriginUrls.value.split(',').map(u => u.trim()) : [];
+  
+  if (urls.includes(url)) {
+    message.error('该地址已存在');
+    return;
+  }
+  
+  urls.push(url);
+  insecureOriginUrls.value = urls.join(',');
+  newUrl.value = '';
+  message.success('地址已添加');
+}
+
+const removeUrl = (urlToRemove) => {
+  const urls = insecureOriginUrls.value.split(',').map(u => u.trim());
+  const index = urls.indexOf(urlToRemove);
+  if (index > -1) {
+    urls.splice(index, 1);
+    insecureOriginUrls.value = urls.join(',');
+    message.success('地址已移除');
+  }
+}
+
+const saveUrls = () => {
+  window.myApi.updateSetting({ name : 'insecureOriginUrls', value: insecureOriginUrls.value});
+  message.success(`设置已更新,请重新启动`)
+}
+
+const getUrlList = computed(() => {
+  return insecureOriginUrls.value ? insecureOriginUrls.value.split(',').map(u => u.trim()).filter(u => u) : [];
+})
+
 const  handleSponsorClick = () =>{
   isShow.value = true;
 }
@@ -335,6 +386,42 @@ const handleClose = () =>{
       </div>
     </n-card>
 
+    <n-alert :show-icon="false" type="info" style="margin-bottom: 1rem; margin-top: 20px;">
+      <n-h3 style="margin-bottom: 0;">地址管理</n-h3>
+    </n-alert>
+
+    <n-card embedded :bordered="true" style="margin-top:1rem;">
+      <div class="wrap">
+        <div class="card url-input-card">
+          <div class="vleft">添加地址：</div>
+          <div class="vright url-input-group">
+            <n-input size="small"
+                     v-model:value="newUrl"
+                     placeholder="输入 http:// 或 https:// 开头的地址"
+                     style="flex: 1;" />
+            <n-button size="small" type="primary" @click="addUrl" style="margin-left: 10px;">添加</n-button>
+          </div>
+        </div>
+
+        <div class="card url-list-card" v-if="getUrlList.length > 0">
+          <div class="vleft">已配置地址：</div>
+          <div class="vright url-list">
+            <div class="url-item" v-for="(url, index) in getUrlList" :key="index">
+              <span class="url-text">{{ url }}</span>
+              <n-button size="tiny" type="error" text @click="removeUrl(url)">删除</n-button>
+            </div>
+          </div>
+        </div>
+
+        <div class="card" v-if="getUrlList.length > 0">
+          <div class="vleft"></div>
+          <div class="vright">
+            <n-button type="success" @click="saveUrls">保存地址配置</n-button>
+          </div>
+        </div>
+      </div>
+    </n-card>
+
     <n-card embedded :bordered="true" style="margin-top: 20px;">
       <n-button :loading="btnLoading" @click="handleBtnClick">{{btnText}}</n-button>
     </n-card>
@@ -362,6 +449,39 @@ const handleClose = () =>{
 
     <n-drawer :show="isShow" v-model:show="isShow" :width="402" placement="right">
       <n-drawer-content title="支持作者" closable>
+
+.url-input-group {
+  display: flex;
+  align-items: center;
+}
+
+.url-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.url-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 4px;
+  word-break: break-all;
+}
+
+.url-text {
+  flex: 1;
+  font-size: 12px;
+  color: #666;
+}
+
+.url-list-card .vleft {
+  align-self: flex-start;
+  margin-top: 5px;
+}
         <n-alert :show-icon="false">
           <div class="flex-box">
           <p style="color:#666; padding: 30px;">

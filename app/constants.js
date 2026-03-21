@@ -37,7 +37,8 @@ export default Object.freeze({
         isAutoLaunch:0,
         leftMenuPosition:'left',
         systemTheme:'system',
-        howLinkOpenMethod:"tuboshu"
+        howLinkOpenMethod:"tuboshu",
+        insecureOriginUrls: 'http://47.121.124.140:6806,http://192.168.31.194:6806'
     },
 
     SETTING:[

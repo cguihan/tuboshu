@@ -5,6 +5,7 @@ import trayManager from'./trayManager.js'
 import shortcutManager from './shortcut/shortcutManager.js'
 import contextManager from "./context/contextManager.js"
 import AutoLaunch from "./utility/autoLaunch.js"
+import CONS from './constants.js'
 
 // app.disableHardwareAcceleration();
 //app.commandLine.appendSwitch('disable-gpu');
@@ -12,7 +13,7 @@ import AutoLaunch from "./utility/autoLaunch.js"
 
 // 2. 将此标志添加到 Chromium 命令行
 // 注意：必须在 app 准备就绪（ready）之前调用
-app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://47.121.124.140:6806,http://192.168.31.194:6806');
+app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', CONS.CONFIG.insecureOriginUrls);
 
 
 
