@@ -12,7 +12,7 @@ import AutoLaunch from "./utility/autoLaunch.js"
 
 // 2. 将此标志添加到 Chromium 命令行
 // 注意：必须在 app 准备就绪（ready）之前调用
-app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://47.121.124.140:6806,http://192.168.31.194:6806');
+app.commandLine.appendSwitch('unsafely-treat-insecure-origin-as-secure', 'http://8.163.7.156:6806,http://8.134.155.69:6806,http://192.168.31.194:6806');
 
 
 
